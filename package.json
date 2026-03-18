@@ -1,0 +1,55 @@
+{
+    "name": "nmd-highlighter",
+    "displayName": "NMD Highlighter",
+    "version": "0.0.1",
+    "publisher": "jtpeller",
+    "description": "Semantic highlighting and gutter icons for Notes Markdown (.nmd) files",
+    "author": {
+        "name": "jtpeller"
+    },
+    "engines": {
+        "vscode": "^1.80.0"
+    },
+    "icon": "images/icon.webp",
+    "galleryBanner": {
+        "color": "#0a0a0a",
+        "theme": "dark"
+    },
+    "pricing": "Free",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jtpeller/nmd-highlighter.git"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onLanguage:markdown"
+    ],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "markdown",
+                "extensions": [
+                    ".nmd"
+                ]
+            }
+        ]
+    },
+    "scripts": {
+        "compile": "npm run check-types && node esbuild.js",
+        "check-types": "tsc --noEmit",
+        "watch": "npm-run-all -p watch:*",
+        "watch:esbuild": "node esbuild.js --watch",
+        "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+        "vscode:prepublish": "npm run package",
+        "package": "npm run check-types && node esbuild.js --production"
+    },
+    "devDependencies": {
+        "@types/node": "^16.18.126",
+        "@types/vscode": "^1.80.0",
+        "esbuild": "^0.27.4",
+        "typescript": "^5.x"
+    }
+}
