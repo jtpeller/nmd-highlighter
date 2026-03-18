@@ -1,7 +1,7 @@
 {
     "name": "nmd-highlighter",
     "displayName": "NMD Highlighter",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "jtpeller",
     "description": "Semantic highlighting and gutter icons for Notes Markdown (.nmd) files",
     "author": {
