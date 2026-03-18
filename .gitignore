@@ -1,0 +1,5 @@
+# Ignore Node.js build items
+node_modules
+package-lock.json
+out
+dist
