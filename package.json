@@ -1,9 +1,9 @@
 {
     "name": "nmd-highlighter",
     "displayName": "NMD Highlighter",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "jtpeller",
-    "description": "Semantic highlighting and gutter icons for Notes Markdown (.nmd) files",
+    "description": "Customizeable semantic highlighting and gutter icons for Notes Markdown (.nmd) files",
     "author": {
         "name": "jtpeller"
     },
@@ -35,7 +35,135 @@
                     ".nmd"
                 ]
             }
-        ]
+        ],
+        "configuration": {
+            "title": "NMD Highlighter",
+            "properties": {
+                "NMDHighlighter.enabled": {
+                    "default": {
+                        "issue": true,
+                        "bug": true,
+                        "task": true,
+                        "fix": true,
+                        "done": true,
+                        "verified": true
+                    },
+                    "markdownDescription": "%NMDHighlighter.enabled.description%",
+                    "scope": "resource",
+                    "type": "object",
+                    "items": {
+                        "type": "boolean"
+                    }
+                },
+                "NMDHighlighter.keywords": {
+                    "default": {
+                        "issue": [
+                            "ISSUE"
+                        ],
+                        "bug": [
+                            "BUG",
+                            "FIXME"
+                        ],
+                        "task": [
+                            "TASK",
+                            "SUBTASK",
+                            "TODO"
+                        ],
+                        "fix": [
+                            "FIX"
+                        ],
+                        "done": [
+                            "DONE"
+                        ],
+                        "verified": [
+                            "VERIFIED"
+                        ]
+                    },
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "markdownDescription": "%NMDHighlighter.keywords.description%",
+                    "scope": "resource",
+                    "type": "object"
+                },
+                "NMDHighlighter.icons": {
+                    "default": {
+                        "issue": "exclaim",
+                        "bug": "bug",
+                        "task": "lightning",
+                        "fix": "checkmark",
+                        "done": "checkmark",
+                        "verified": "star"
+                    },
+                    "additionalProperties": {
+                        "type": "string",
+                        "enum": [
+                            "exclaim",
+                            "lightning",
+                            "checkmark",
+                            "bug",
+                            "star"
+                        ],
+                        "enumItemLabels": [
+                            "Exclamation Point",
+                            "Lightning Bolt",
+                            "Checkmark",
+                            "Bug",
+                            "Star"
+                        ],
+                        "markdownEnumDescriptions": [
+                            "Exclamation Point in a filled circle",
+                            "Filled Lightning Bolt",
+                            "Checkmark",
+                            "Bug",
+                            "Filled 5-pointed star"
+                        ]
+                    },
+                    "markdownDescription": "%NMDHighlighter.icons.description%",
+                    "scope": "resource",
+                    "type": "object"
+                },
+                "NMDHighlighter.fgColors": {
+                    "default": {
+                        "issue": "#FF5252",
+                        "bug": "#FF6900",
+                        "task": "#FFB300",
+                        "fix": "#448AFF",
+                        "done": "#4CAF50",
+                        "verified": "#FFFFFF"
+                    },
+                    "additionalProperties": {
+                        "type": "string",
+                        "format": "color-hex",
+                        "default": "#FFFFFF"
+                    },
+                    "markdownDescription": "%NMDHighlighter.fgColors.description%",
+                    "scope": "resource",
+                    "type": "object"
+                },
+                "NMDHighlighter.bgColors": {
+                    "default": {
+                        "issue": "#00000000",
+                        "bug": "#00000000",
+                        "task": "#00000000",
+                        "fix": "#00000000",
+                        "done": "#00000000",
+                        "verified": "#137216"
+                    },
+                    "additionalProperties": {
+                        "type": "string",
+                        "format": "color-hex",
+                        "default": "#00000000"
+                    },
+                    "markdownDescription": "%NMDHighlighter.bgColors.description%",
+                    "scope": "resource",
+                    "type": "object"
+                }
+            }
+        }
     },
     "scripts": {
         "compile": "npm run check-types && node esbuild.js",
@@ -50,6 +178,7 @@
         "@types/node": "^16.18.126",
         "@types/vscode": "^1.80.0",
         "esbuild": "^0.27.4",
-        "typescript": "^5.x"
+        "typescript": "^5.x",
+        "ts-node": "^10.9.2"
     }
 }

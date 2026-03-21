@@ -1,0 +1,7 @@
+{
+    "NMDHighlighter.enabled.description": "Whether a particular highlight is enabled or not.",
+    "NMDHighlighter.icons.description": "Define the **Icons** to be used per category. The options are: \n - `exclaim`: An exclamation point inscribed in a circle. \n - `lightning`: A lightning bolt, filled. \n - `checkmark`: A simple checkmark. \n - `bug`: A bug-shaped icon. \n - `star`: A 5-pointed star, filled.",
+    "NMDHighlighter.bgColors.description": "Define the **Background Colors** to be used per category.",
+    "NMDHighlighter.fgColors.description": "Define the **Foreground Colors** to be used per category.",
+    "NMDHighlighter.keywords.description": "Define the **Keywords** to be used per category. Each keyword is recognized separately. Keywords are recognized only at the front of the line. **These are also case-sensitive!** The following precedence exists: ISSUE > BUG > TASK > FIX > DONE > VERIFIED."
+}
