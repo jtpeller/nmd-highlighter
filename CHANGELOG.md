@@ -4,6 +4,24 @@ This doc details the changes to the NMD Highlighter.
 
 Mostly based on [Keep a Changelog](http://keepachangelog.com/) for structure and concepts.
 
+## [0.0.4] - 2026.03.21
+
+- New Markdown Preview.
+- Refinements across the extension code.
+- New commands!
+- New keywords!
+
+### Added in [0.0.4]
+
+- VSCode Command (`Ctrl + Shift + T`) to add the timestamp and the category type in a format: `[HH:MM] ${KEYWORD}:`
+- VSCode Command to generate an entire month of notes. It is very customizeable:
+  - Can pick a particular month to generate.
+  - Can choose to include or exclude weekends (Saturday & Sunday).
+  - Can control the order of days (31st counting down or 1st counting up).
+  - Can control the first day of the week (e.g., Monday or Sunday).
+- New keyword category: Comment. This is great for things like Notes, Comments, documentation; anything that's not super important but enough to write down.
+- Markdown preview, which enables visualizing the keywords and notes you take in VSCode's Markdown Preview.
+
 ## [0.0.3] - 2026.03.21
 
 - Massive overhaul of extension.

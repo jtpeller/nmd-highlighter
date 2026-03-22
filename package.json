@@ -1,7 +1,7 @@
 {
     "name": "nmd-highlighter",
     "displayName": "NMD Highlighter",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "jtpeller",
     "description": "Customizeable semantic highlighting and gutter icons for Notes Markdown (.nmd) files",
     "author": {
@@ -28,6 +28,28 @@
     ],
     "main": "./dist/extension.js",
     "contributes": {
+        "commands": [
+            {
+                "command": "nmdHighlighter.insertTimestamp",
+                "title": "NMD Highlighter: Insert Current Timestamp"
+            },
+            {
+                "command": "nmdHighlighter.generateMonthlyTemplate",
+                "title": "NMD Highlighter: Generate Monthly Template"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "nmdHighlighter.insertTimestamp",
+                "key": "ctrl+shift+t",
+                "mac": "cmd+shift+t",
+                "when": "editorTextFocus && editorLangId == markdown"
+            }
+        ],
+        "markdown.markdownItPlugins": true,
+        "markdown.previewStyles": [
+            "./styles/nmd-styles.css"
+        ],
         "languages": [
             {
                 "id": "markdown",
@@ -46,7 +68,8 @@
                         "task": true,
                         "fix": true,
                         "done": true,
-                        "verified": true
+                        "verified": true,
+                        "notes": true
                     },
                     "markdownDescription": "%NMDHighlighter.enabled.description%",
                     "scope": "resource",
@@ -77,6 +100,9 @@
                         ],
                         "verified": [
                             "VERIFIED"
+                        ],
+                        "notes": [
+                            "NOTE", "INFO", "COMMENT", "DOC", "//"
                         ]
                     },
                     "additionalProperties": {
@@ -96,7 +122,8 @@
                         "task": "lightning",
                         "fix": "checkmark",
                         "done": "checkmark",
-                        "verified": "star"
+                        "verified": "star",
+                        "notes": "pencil"
                     },
                     "additionalProperties": {
                         "type": "string",
@@ -105,21 +132,24 @@
                             "lightning",
                             "checkmark",
                             "bug",
-                            "star"
+                            "star",
+                            "pencil"
                         ],
                         "enumItemLabels": [
                             "Exclamation Point",
                             "Lightning Bolt",
                             "Checkmark",
                             "Bug",
-                            "Star"
+                            "Star",
+                            "Pencil"
                         ],
                         "markdownEnumDescriptions": [
                             "Exclamation Point in a filled circle",
                             "Filled Lightning Bolt",
                             "Checkmark",
                             "Bug",
-                            "Filled 5-pointed star"
+                            "Filled 5-pointed star",
+                            "Outlined Pencil icon"
                         ]
                     },
                     "markdownDescription": "%NMDHighlighter.icons.description%",
@@ -133,7 +163,8 @@
                         "task": "#FFB300",
                         "fix": "#448AFF",
                         "done": "#4CAF50",
-                        "verified": "#FFFFFF"
+                        "verified": "#FFFFFF",
+                        "notes": "#fc79b2"
                     },
                     "additionalProperties": {
                         "type": "string",
@@ -151,7 +182,8 @@
                         "task": "#00000000",
                         "fix": "#00000000",
                         "done": "#00000000",
-                        "verified": "#137216"
+                        "verified": "#137216",
+                        "notes": "#00000000"
                     },
                     "additionalProperties": {
                         "type": "string",
@@ -175,10 +207,11 @@
         "package": "npm run check-types && node esbuild.js --production"
     },
     "devDependencies": {
+        "@types/markdown-it": "^14.1.2",
         "@types/node": "^16.18.126",
         "@types/vscode": "^1.80.0",
         "esbuild": "^0.27.4",
-        "typescript": "^5.x",
-        "ts-node": "^10.9.2"
+        "ts-node": "^10.9.2",
+        "typescript": "^5.x"
     }
 }

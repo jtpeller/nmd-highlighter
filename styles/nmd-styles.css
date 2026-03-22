@@ -1,0 +1,96 @@
+
+.nmd-line {
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.5;
+    padding: 4px 12px;
+    margin: 4px 0;
+    border-radius: 6px;
+    background-color: var(--vscode-textBlockQuote-background);
+    border: 1px solid var(--vscode-widget-border);
+}
+.nmd-icon {
+    width: 16px !important;
+    height: 16px !important;
+    margin-top: 2px;
+    margin-right: 10px;
+    flex-shrink: 0;
+    text-indent: 0;
+}
+/* Ensure the SVG inside the span obeys the parent size */
+.nmd-icon svg {
+    width: 16px !important;
+    height: 16px !important;
+    display: block;
+}
+/* Subtle text glow for dark themes, crispness for light themes */
+.nmd-line span {
+    text-shadow: 0 0 1px var(--vscode-editor-background);
+}
+
+/* Hide the bullet point for NMD lines. */
+li:has(.nmd-line) {
+    list-style-type: none !important;
+}
+
+/* Hide the bullet point for NMD lines. */
+ul:has(.nmd-line) {
+    list-style-type: none !important;
+    padding-left: 10px !important; /* Adjust padding since bullet is gone */
+}
+/* NOTE: Ordered lists are not supported on purpose. */
+
+/* Hover effect: Subtle glow and lift */
+.nmd-line:hover {
+    background-color: var(--vscode-list-hoverBackground);
+    border-color: var(--vscode-focusBorder);
+    transition: all 0.1s ease-in-out;
+}
+
+.nmd-preview-issue {
+    color: #FF5252 !important;
+    background-color: #000000 !important;
+    border-left: 4px solid #FF5252;
+}
+
+.nmd-preview-bug {
+    color: #FF6900 !important;
+    background-color: var(--vscode-editor-selectionHighlightBackground) !important;
+    border-left: 4px solid #FF6900;
+}
+
+.nmd-preview-task {
+    color: #FFB300 !important;
+    background-color: var(--vscode-editor-selectionHighlightBackground) !important;
+    border-left: 4px solid #FFB300;
+}
+
+.nmd-preview-fix {
+    color: #448AFF !important;
+    background-color: var(--vscode-editor-selectionHighlightBackground) !important;
+    border-left: 4px solid #448AFF;
+}
+
+.nmd-preview-done {
+    color: #4CAF50 !important;
+    background-color: var(--vscode-editor-selectionHighlightBackground) !important;
+    border-left: 4px solid #4CAF50;
+}
+
+.nmd-preview-verified {
+    color: #FFFFFF !important;
+    background-color: #137216 !important;
+    border-left: 4px solid #FFFFFF;
+}
+
+.nmd-preview-notes {
+    color: #fc79b2 !important;
+    background-color: var(--vscode-editor-selectionHighlightBackground) !important;
+    border-left: 4px solid #fc79b2;
+}
+
+.nmd-preview-custom {
+    color: #FFFFFF !important;
+    background-color: #986754 !important;
+    border-left: 4px solid #FFFFFF;
+}
