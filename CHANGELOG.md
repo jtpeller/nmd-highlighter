@@ -4,6 +4,21 @@ This doc details the changes to the NMD Highlighter.
 
 Mostly based on [Keep a Changelog](http://keepachangelog.com/) for structure and concepts.
 
+## [0.0.5] - 2026.03.22
+
+- Typo fixes.
+- Documentation updates.
+- New keyword for Issue category.
+
+### Added in [0.0.5]
+
+- Added "CRITICAL" to the Issue category.
+
+### Updated in [0.0.5]
+
+- Fixed typos here and there.
+- Updated README.md
+
 ## [0.0.4] - 2026.03.21
 
 - New Markdown Preview.

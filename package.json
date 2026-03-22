@@ -1,9 +1,9 @@
 {
     "name": "nmd-highlighter",
     "displayName": "NMD Highlighter",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "publisher": "jtpeller",
-    "description": "Customizeable semantic highlighting and gutter icons for Notes Markdown (.nmd) files",
+    "description": "Customizable semantic highlighting and gutter icons for Notes Markdown (.nmd) files",
     "author": {
         "name": "jtpeller"
     },
@@ -81,7 +81,7 @@
                 "NMDHighlighter.keywords": {
                     "default": {
                         "issue": [
-                            "ISSUE"
+                            "ISSUE", "CRITICAL"
                         ],
                         "bug": [
                             "BUG",
