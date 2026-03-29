@@ -1,55 +1,47 @@
 
-.nmd-line {
-    display: flex;
-    align-items: flex-start;
-    line-height: 1.5;
-    padding: 4px 12px;
-    margin: 4px 0;
-    border-radius: 6px;
-    background-color: var(--vscode-textBlockQuote-background);
-    border: 1px solid var(--vscode-widget-border);
+/* Ensure standalone NMD elements stay on their own line */
+.nmd-block-wrapper {
+    display: block;
+    margin: 6px 0;
 }
-.nmd-icon {
-    width: 16px !important;
-    height: 16px !important;
-    margin-top: 2px;
-    margin-right: 10px;
+
+/* Hide the default bullet for list items containing an NMD line */
+li:has(.nmd-line-inline) {
+    list-style: none !important;
+    /* Adjust margin to match where the bullet used to be */
+    margin-left: -1.6em;
+}
+
+/* Style the inline icon wrapper */
+.nmd-line-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+.nmd-icon-inline {
+    display: inline-block;
+    width: 1.1em;
+    height: 1.1em;
     flex-shrink: 0;
-    text-indent: 0;
+    /* Vertically center the icon with the text line */
+    vertical-align: text-bottom;
 }
-/* Ensure the SVG inside the span obeys the parent size */
-.nmd-icon svg {
-    width: 16px !important;
-    height: 16px !important;
+
+.nmd-icon-inline svg {
+    width: 100%;
+    height: 100%;
     display: block;
 }
-/* Subtle text glow for dark themes, crispness for light themes */
-.nmd-line span {
-    text-shadow: 0 0 1px var(--vscode-editor-background);
-}
 
-/* Hide the bullet point for NMD lines. */
-li:has(.nmd-line) {
-    list-style-type: none !important;
-}
-
-/* Hide the bullet point for NMD lines. */
-ul:has(.nmd-line) {
-    list-style-type: none !important;
-    padding-left: 10px !important; /* Adjust padding since bullet is gone */
-}
-/* NOTE: Ordered lists are not supported on purpose. */
-
-/* Hover effect: Subtle glow and lift */
-.nmd-line:hover {
-    background-color: var(--vscode-list-hoverBackground);
-    border-color: var(--vscode-focusBorder);
-    transition: all 0.1s ease-in-out;
+/* Text styling */
+.nmd-text-colored {
+    font-weight: 500;
 }
 
 .nmd-preview-issue {
     color: #FF5252 !important;
-    background-color: #000000 !important;
+    background-color: var(--vscode-editor-selectionHighlightBackground) !important;
     border-left: 4px solid #FF5252;
 }
 

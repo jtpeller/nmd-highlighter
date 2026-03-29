@@ -242,52 +242,44 @@ class NMDExtensionDirector {
         // Starting point.
         let css =
             `
-.nmd-line {
-    display: flex;
-    align-items: flex-start;
-    line-height: 1.5;
-    padding: 4px 12px;
-    margin: 4px 0;
-    border-radius: 6px;
-    background-color: var(--vscode-textBlockQuote-background);
-    border: 1px solid var(--vscode-widget-border);
+/* Ensure standalone NMD elements stay on their own line */
+.nmd-block-wrapper {
+    display: block;
+    margin: 6px 0;
 }
-.nmd-icon {
-    width: 16px !important;
-    height: 16px !important;
-    margin-top: 2px;
-    margin-right: 10px;
+
+/* Hide the default bullet for list items containing an NMD line */
+li:has(.nmd-line-inline) {
+    list-style: none !important;
+    /* Adjust margin to match where the bullet used to be */
+    margin-left: -1.6em;
+}
+
+/* Style the inline icon wrapper */
+.nmd-line-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+.nmd-icon-inline {
+    display: inline-block;
+    width: 1.1em;
+    height: 1.1em;
     flex-shrink: 0;
-    text-indent: 0;
+    /* Vertically center the icon with the text line */
+    vertical-align: text-bottom;
 }
-/* Ensure the SVG inside the span obeys the parent size */
-.nmd-icon svg {
-    width: 16px !important;
-    height: 16px !important;
+
+.nmd-icon-inline svg {
+    width: 100%;
+    height: 100%;
     display: block;
 }
-/* Subtle text glow for dark themes, crispness for light themes */
-.nmd-line span {
-    text-shadow: 0 0 1px var(--vscode-editor-background);
-}
 
-/* Hide the bullet point for NMD lines. */
-li:has(.nmd-line) {
-    list-style-type: none !important;
-}
-
-/* Hide the bullet point for NMD lines. */
-ul:has(.nmd-line) {
-    list-style-type: none !important;
-    padding-left: 10px !important; /* Adjust padding since bullet is gone */
-}
-/* NOTE: Ordered lists are not supported on purpose. */
-
-/* Hover effect: Subtle glow and lift */
-.nmd-line:hover {
-    background-color: var(--vscode-list-hoverBackground);
-    border-color: var(--vscode-focusBorder);
-    transition: all 0.1s ease-in-out;
+/* Text styling */
+.nmd-text-colored {
+    font-weight: 500;
 }
 `;
 
@@ -475,18 +467,31 @@ function extendMarkdownItInternal(md: any) {
     md.renderer.rules.paragraph_open = function (tokens: any, idx: any, options: any, env: any, self: any) {
         const nextToken = tokens[idx + 1];
 
-        // Ensure handler and rules exist before iterating
         if (handler && nextToken && nextToken.type === 'inline') {
             const content = nextToken.content.trim();
 
             for (const rule of handler.rules) {
                 if (rule.checkLine(content)) {
-                    // Use the raw SVG from our icon set
-                    const rawSvg = icons[rule.iconName].replace("%color", rule.iconColor);
+                    // 1. Clean the content if it's a list item
+                    let isListItem = false;
+                    if (nextToken.content.trim().startsWith("- ")) {
+                        nextToken.content = nextToken.content.replace("- ", "");
+                        isListItem = true;
+                    }
 
-                    // Mark this token so paragraph_close knows to close the div
+                    let rawSvg = icons[rule.iconName];
+                    if (rule.iconColor == rule.bgColor) {
+                        rawSvg = rawSvg.replace("%color", rule.fgColor);
+                    } else {
+                        rawSvg = rawSvg.replace("%color", rule.iconColor);
+                    }
                     tokens[idx].nmdCustom = true;
-                    return `<div class="nmd-line nmd-preview-${rule.name.toLowerCase()}"><span class="nmd-icon">${rawSvg}</span>`;
+
+                    // 2. Logic: If it's NOT a list item, wrap in a div to preserve line breaks
+                    const openTag = isListItem ? "" : `<div class="nmd-block-wrapper">`;
+
+                    return `${openTag}<span class="nmd-line-inline nmd-text-colored" style="color: ${rule.fgColor} !important; background-color: ${rule.bgColor} !important; border-radius: 4px;">` +
+                        `<span class="nmd-icon-inline">${rawSvg}</span>`;
                 }
             }
         }
@@ -498,9 +503,16 @@ function extendMarkdownItInternal(md: any) {
     };
 
     md.renderer.rules.paragraph_close = function (tokens: any, idx: any, options: any, env: any, self: any) {
-        // We look back to see if the opening tag was one of ours
         if (tokens[idx].nmdCustom || (idx > 1 && tokens[idx - 2].nmdCustom)) {
-            return "</div>";
+            // If we opened a block wrapper, close it
+            const isListItem = tokens[idx].nmdListItem; // You can set this flag in open
+            // Simple check: was the previous open token a list item? 
+            // Better yet, just check if we need the closing div:
+            const needsClosingDiv = !self.rules.paragraph_open.lastWasListItem;
+
+            // To make this robust, let's use a simpler marker:
+            const closeTag = (tokens[idx].nmdIsBlock) ? "</span></div>" : "</span>";
+            return closeTag;
         }
         return defaultParagraphClose(tokens, idx, options, env, self);
     };

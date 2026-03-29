@@ -36,8 +36,13 @@ The formatting is handled by a series of rules that are baked-in by default. The
 | Verified | green (highlight) |             star              |           VERIFIED           | Marks that something was tested as working as intended.    |
 |  Notes   |    light pink     |            Pencil             | NOTE, INFO, COMMENT, DOC, // | Quick notes or not-so-critical things                      |
 
-> [!NOTE]
-> These rules also apply to the Markdown Preview! (*which is fun and definitely wasn't exhausting to figure out.*)
+Here's a preview of the rules in the editor itself:
+
+![Editor Example](images/nmd.webp)
+
+These rules also apply to the Markdown Preview! Take a look!
+
+![Markdown Preview Example](images/nmd-preview.webp)
 
 ## Commands
 
