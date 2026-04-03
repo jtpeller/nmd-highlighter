@@ -4,6 +4,27 @@ This doc details the changes to the NMD Highlighter.
 
 Mostly based on [Keep a Changelog](http://keepachangelog.com/) for structure and concepts.
 
+## [0.0.7] - 2026.04.02
+
+### Added in [0.0.7]
+
+- New Icon: Person
+  - Very useful for meetings.
+- New Icon: Left Arrow
+  - Very useful to highlight Out-Of-Office or PTO.
+
+### Changed in [0.0.7]
+
+- NMD-lines are shorter, so they don't take as much space and look as strange.
+- PATCH: NMD-lines can now adequately display `code`, *italics*, **bold**, etc.
+- Improved shut down and settings load to be a bit faster (*allegedly*).
+
+## [0.0.6] - 2026.03.29
+
+### Changed in [0.0.6]
+
+- Adjusted the Markdown Preview look & feel, so it was more list-like and minimalist.
+
 ## [0.0.5] - 2026.03.22
 
 - Typo fixes.
@@ -14,7 +35,7 @@ Mostly based on [Keep a Changelog](http://keepachangelog.com/) for structure and
 
 - Added "CRITICAL" to the Issue category.
 
-### Updated in [0.0.5]
+### Changed in [0.0.5]
 
 - Fixed typos here and there.
 - Updated README.md

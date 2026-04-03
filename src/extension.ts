@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
+import { promises as fsPromises } from 'fs';
 import * as path from 'path';
 
 const icons: { [key: string]: string } = {
@@ -15,6 +16,10 @@ const icons: { [key: string]: string } = {
     "checkmark": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z"/></svg>`,
     // Pencil
     "pencil": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25a1.75 1.75 0 0 1 .445-.758l8.61-8.61Zm1.414 1.06a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354l-1.086-1.086ZM11.189 6.25l-1.44-1.44L3.515 11.044a.25.25 0 0 0-.064.108l-.437 1.53 1.53-.437a.25.25 0 0 0 .108-.063l6.537-6.537Z"/></svg>`,
+    // Person
+    "person": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664h10Z"/></svg>`,
+    // Left-arrow
+    "left-arrow": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M1.5 8L14 2l-2 6 2 6-12.5-6z M4.5 8l6.5 2.5-1-2.5 1-2.5L4.5 8z" /></svg>`,
 };
 
 const logger = vscode.window.createOutputChannel("NMD Highlighter", { log: true });
@@ -110,26 +115,35 @@ class NMDExtensionDirector {
         // Save the context.
         this.#context = context;
 
-        // Set up text editor listener.
-        vscode.window.onDidChangeActiveTextEditor((editor: any) => {
-            this.triggerUpdateDecorations(editor);
-        }, null, this.#context.subscriptions);
-
-        // Set up text document listener.
-        vscode.workspace.onDidChangeTextDocument((event: { document: any; }) => {
-            if (vscode.window.activeTextEditor && event.document === vscode.window.activeTextEditor.document) {
-                this.triggerUpdateDecorations(vscode.window.activeTextEditor);
-            }
-        }, null, this.#context.subscriptions);
+        this.#context.subscriptions.push(
+            // Set up text editor listener.
+            vscode.window.onDidChangeActiveTextEditor((editor: any) => {
+                this.triggerUpdateDecorations(editor);
+            }),
+            // Set up text document listener.
+            vscode.workspace.onDidChangeTextDocument((event: { document: any; }) => {
+                if (vscode.window.activeTextEditor && event.document === vscode.window.activeTextEditor.document) {
+                    this.triggerUpdateDecorations(vscode.window.activeTextEditor);
+                }
+            })
+        )
 
         // Initial run
         if (vscode.window.activeTextEditor) {
             this.triggerUpdateDecorations(vscode.window.activeTextEditor);
         }
-
     }
 
-    loadSettings() {
+    // New dispose method to be called on deactivation
+    public dispose() {
+        if (this.#timeout) {
+            clearTimeout(this.#timeout);
+        }
+        this.rules.forEach(rule => rule.decorationType.dispose());
+        this.rules = [];
+    }
+
+    async loadSettings() {
         // Clean up old decorations so they don't "stack"
         this.rules.forEach(rule => rule.decorationType.dispose());
         this.rules.forEach(rule => rule.decorationOptions = [] as vscode.DecorationOptions[]);
@@ -178,7 +192,8 @@ class NMDExtensionDirector {
         const stylePath = path.join(this.#context.extensionPath, './styles/nmd-styles.css');
 
         try {
-            fs.writeFileSync(stylePath, cssContent);
+            await fsPromises.writeFile(stylePath, cssContent);
+            logger.debug("NMD Extension successfully updated dynamic CSS!");
         } catch (err) {
             logger.error("Failed to write dynamic CSS file: " + err);
         }
@@ -242,44 +257,52 @@ class NMDExtensionDirector {
         // Starting point.
         let css =
             `
-/* Ensure standalone NMD elements stay on their own line */
+/* Standalone NMD elements block wrapper (non-list-items) */
 .nmd-block-wrapper {
     display: block;
-    margin: 6px 0;
+    margin: 0; /* Remove extra margin to match normal line spacing */
+    padding: 0;
 }
 
-/* Hide the default bullet for list items containing an NMD line */
+/* Hide the default bullet for list items */
 li:has(.nmd-line-inline) {
     list-style: none !important;
-    /* Adjust margin to match where the bullet used to be */
     margin-left: -1.6em;
 }
 
-/* Style the inline icon wrapper */
+/* The actual NMD Line class, which holds a single NMD Line. */
 .nmd-line-inline {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px; /* Space between icon and text */
+    display: inline;
+    line-height: inherit;
 }
 
+/* The icon - Uses vertical-align to stay level with text without flexbox */
 .nmd-icon-inline {
     display: inline-block;
-    width: 1.1em;
-    height: 1.1em;
+    width: 1em;
+    height: 1em;
+    margin-right: 6px;
+    vertical-align: -0.15em; /* Adjusts icon to sit on the text baseline */
     flex-shrink: 0;
-    /* Vertically center the icon with the text line */
-    vertical-align: text-bottom;
 }
 
+/* The SVG itself should just fill the area */
 .nmd-icon-inline svg {
     width: 100%;
     height: 100%;
     display: block;
 }
 
-/* Text styling */
-.nmd-text-colored {
-    font-weight: 500;
+/* Ensure bold/italics/code inside NMD lines inherit the custom color */
+.nmd-line-inline * {
+    color: inherit !important;
+}
+
+/* Code blocks need to keep their own background */
+.nmd-line-inline code {
+    background-color: var(--vscode-editor-inactiveSelectionBackground);
+    padding: 0 3px;
+    border-radius: 3px;
 }
 `;
 
@@ -307,7 +330,7 @@ export function activate(context: vscode.ExtensionContext) {
     handler = new NMDExtensionDirector(context);
 
     // Listen for settings changes
-    context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(e => {
+    context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(async e => {
         if (e.affectsConfiguration('NMDHighlighter.enabled')
             || e.affectsConfiguration('NMDHighlighter.bgColors')
             || e.affectsConfiguration('NMDHighlighter.fgColors')
@@ -318,7 +341,7 @@ export function activate(context: vscode.ExtensionContext) {
     }));
 
     // Initial load
-    handler.loadSettings();
+    handler.loadSettings().catch(err => logger.error(err));
 
     // Register the Timestamp Command
     let timestampCommand = vscode.commands.registerCommand('nmdHighlighter.insertTimestamp', async () => {
@@ -354,7 +377,6 @@ export function activate(context: vscode.ExtensionContext) {
         const now = new Date();
         const nextMonth = String(now.getMonth() + 2).padStart(2, '0');
         const currentYear = String(now.getFullYear() + (now.getMonth() == 11 ? 1 : 0));
-
 
         // 1. Ask for MM/YYYY
         const dateInput = await vscode.window.showInputBox({
@@ -472,10 +494,12 @@ function extendMarkdownItInternal(md: any) {
 
             for (const rule of handler.rules) {
                 if (rule.checkLine(content)) {
-                    // 1. Clean the content if it's a list item
                     let isListItem = false;
-                    if (nextToken.content.trim().startsWith("- ")) {
-                        nextToken.content = nextToken.content.replace("- ", "");
+                    let currentContent = nextToken.content;
+
+                    // Only strip the dash if it's strictly a list item prefix.
+                    if (currentContent.startsWith("- ")) {
+                        nextToken.content = currentContent.substring(2);
                         isListItem = true;
                     }
 
@@ -487,10 +511,10 @@ function extendMarkdownItInternal(md: any) {
                     }
                     tokens[idx].nmdCustom = true;
 
-                    // 2. Logic: If it's NOT a list item, wrap in a div to preserve line breaks
-                    const openTag = isListItem ? "" : `<div class="nmd-block-wrapper">`;
+                    // If it's NOT a list item, wrap in a div to preserve line breaks.
+                    const wrapper = isListItem ? "" : `<div class="nmd-block-wrapper">`;
 
-                    return `${openTag}<span class="nmd-line-inline nmd-text-colored" style="color: ${rule.fgColor} !important; background-color: ${rule.bgColor} !important; border-radius: 4px;">` +
+                    return `${wrapper}<span class="nmd-line-inline" style="color: ${rule.fgColor} !important; background-color: ${rule.bgColor} !important; border-radius: 4px;">` +
                         `<span class="nmd-icon-inline">${rawSvg}</span>`;
                 }
             }
@@ -520,5 +544,10 @@ function extendMarkdownItInternal(md: any) {
     return md;
 }
 
-// Deactivate just stops everything from happening.
-export function deactivate() { }
+export function deactivate(): Thenable<void> | undefined {
+    if (handler) {
+        handler.dispose();
+    }
+    logger.info("NMD Highlighter: Deactivated.");
+    return undefined;
+}

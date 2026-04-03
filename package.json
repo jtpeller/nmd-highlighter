@@ -1,7 +1,7 @@
 {
     "name": "nmd-highlighter",
     "displayName": "Notes Markdown (NMD) Highlighter",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "publisher": "jtpeller",
     "description": "Customizable semantic highlighting and gutter icons for Notes Markdown (.nmd) files",
     "author": {
@@ -59,7 +59,7 @@
             }
         ],
         "configuration": {
-            "title": "NMD Highlighter",
+            "title": "Notes Markdown (NMD) Highlighter",
             "properties": {
                 "NMDHighlighter.enabled": {
                     "default": {
@@ -133,7 +133,10 @@
                             "checkmark",
                             "bug",
                             "star",
-                            "pencil"
+                            "pencil",
+                            "person",
+                            "plane",
+                            "left-arrow"
                         ],
                         "enumItemLabels": [
                             "Exclamation Point",
@@ -141,7 +144,10 @@
                             "Checkmark",
                             "Bug",
                             "Star",
-                            "Pencil"
+                            "Pencil",
+                            "Person",
+                            "Plane",
+                            "Left Arrow"
                         ],
                         "markdownEnumDescriptions": [
                             "Exclamation Point in a filled circle",
@@ -149,7 +155,10 @@
                             "Checkmark",
                             "Bug",
                             "Filled 5-pointed star",
-                            "Outlined Pencil icon"
+                            "Outlined Pencil icon",
+                            "Outlined Person icon",
+                            "Outlined Plane icon",
+                            "Outlined arrowhead icon pointing left"
                         ]
                     },
                     "markdownDescription": "%NMDHighlighter.icons.description%",

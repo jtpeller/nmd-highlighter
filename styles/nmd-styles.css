@@ -1,42 +1,50 @@
 
-/* Ensure standalone NMD elements stay on their own line */
+/* Standalone NMD elements block wrapper (non-list-items) */
 .nmd-block-wrapper {
     display: block;
-    margin: 6px 0;
+    margin: 0; /* Remove extra margin to match normal line spacing */
+    padding: 0;
 }
 
-/* Hide the default bullet for list items containing an NMD line */
+/* Hide the default bullet for list items */
 li:has(.nmd-line-inline) {
     list-style: none !important;
-    /* Adjust margin to match where the bullet used to be */
     margin-left: -1.6em;
 }
 
-/* Style the inline icon wrapper */
+/* The actual NMD Line class, which holds a single NMD Line. */
 .nmd-line-inline {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px; /* Space between icon and text */
+    display: inline;
+    line-height: inherit;
 }
 
+/* The icon - Uses vertical-align to stay level with text without flexbox */
 .nmd-icon-inline {
     display: inline-block;
-    width: 1.1em;
-    height: 1.1em;
+    width: 1em;
+    height: 1em;
+    margin-right: 6px;
+    vertical-align: -0.15em; /* Adjusts icon to sit on the text baseline */
     flex-shrink: 0;
-    /* Vertically center the icon with the text line */
-    vertical-align: text-bottom;
 }
 
+/* The SVG itself should just fill the area */
 .nmd-icon-inline svg {
     width: 100%;
     height: 100%;
     display: block;
 }
 
-/* Text styling */
-.nmd-text-colored {
-    font-weight: 500;
+/* Ensure bold/italics/code inside NMD lines inherit the custom color */
+.nmd-line-inline * {
+    color: inherit !important;
+}
+
+/* Code blocks need to keep their own background */
+.nmd-line-inline code {
+    background-color: var(--vscode-editor-inactiveSelectionBackground);
+    padding: 0 3px;
+    border-radius: 3px;
 }
 
 .nmd-preview-issue {
