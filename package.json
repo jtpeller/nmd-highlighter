@@ -1,7 +1,7 @@
 {
     "name": "nmd-highlighter",
     "displayName": "Notes Markdown (NMD) Highlighter",
-    "version": "0.0.7",
+    "version": "0.0.10",
     "publisher": "jtpeller",
     "description": "Customizable semantic highlighting and gutter icons for Notes Markdown (.nmd) files",
     "author": {
@@ -31,11 +31,23 @@
         "commands": [
             {
                 "command": "nmdHighlighter.insertTimestamp",
-                "title": "NMD Highlighter: Insert Current Timestamp"
+                "title": "NMD Highlighter: Insert Current Timestamp",
+                "category": "NMD Highlighter"
+            },
+            {
+                "command": "nmdHighlighter.insertRightArrow",
+                "title": "NMD Highlighter: Insert LaTeX Right Arrow",
+                "category": "NMD Highlighter"
+            },
+            {
+                "command": "nmdHighlighter.insertDefinitionTemplate",
+                "title": "NMD Highlighter: Insert Definition Template",
+                "category": "NMD Highlighter"
             },
             {
                 "command": "nmdHighlighter.generateMonthlyTemplate",
-                "title": "NMD Highlighter: Generate Monthly Template"
+                "title": "NMD Highlighter: Generate Monthly Template",
+                "category": "NMD Highlighter"
             }
         ],
         "keybindings": [
@@ -43,6 +55,18 @@
                 "command": "nmdHighlighter.insertTimestamp",
                 "key": "ctrl+shift+t",
                 "mac": "cmd+shift+t",
+                "when": "editorTextFocus && editorLangId == markdown"
+            },
+            {
+                "command": "nmdHighlighter.insertRightArrow",
+                "key": "ctrl+k `",
+                "mac": "cmd+k `",
+                "when": "editorTextFocus && editorLangId == markdown"
+            },
+            {
+                "command": "nmdHighlighter.insertDefinitionTemplate",
+                "key": "ctrl+k ctrl+d",
+                "mac": "cmd+k cmd+d",
                 "when": "editorTextFocus && editorLangId == markdown"
             }
         ],
@@ -61,6 +85,12 @@
         "configuration": {
             "title": "Notes Markdown (NMD) Highlighter",
             "properties": {
+                "NMDHighlighter.definitionColor": {
+                    "type": "string",
+                    "format": "color-hex",
+                    "default": "#009f9f",
+                    "description": "The default color used for LaTeX template definitions."
+                },
                 "NMDHighlighter.enabled": {
                     "default": {
                         "issue": true,
@@ -81,7 +111,8 @@
                 "NMDHighlighter.keywords": {
                     "default": {
                         "issue": [
-                            "ISSUE", "CRITICAL"
+                            "ISSUE",
+                            "CRITICAL"
                         ],
                         "bug": [
                             "BUG",
@@ -102,7 +133,10 @@
                             "VERIFIED"
                         ],
                         "notes": [
-                            "NOTE", "INFO", "COMMENT", "DOC", "//"
+                            "NOTE",
+                            "INFO",
+                            "COMMENT",
+                            "//"
                         ]
                     },
                     "additionalProperties": {
@@ -136,7 +170,8 @@
                             "pencil",
                             "person",
                             "plane",
-                            "left-arrow"
+                            "left-arrow",
+                            "git"
                         ],
                         "enumItemLabels": [
                             "Exclamation Point",
@@ -147,7 +182,8 @@
                             "Pencil",
                             "Person",
                             "Plane",
-                            "Left Arrow"
+                            "Left Arrow",
+                            "Git: Version Control"
                         ],
                         "markdownEnumDescriptions": [
                             "Exclamation Point in a filled circle",
@@ -158,7 +194,8 @@
                             "Outlined Pencil icon",
                             "Outlined Person icon",
                             "Outlined Plane icon",
-                            "Outlined arrowhead icon pointing left"
+                            "Outlined arrowhead icon pointing left",
+                            "Version Control branch icon"
                         ]
                     },
                     "markdownDescription": "%NMDHighlighter.icons.description%",

@@ -10,3 +10,4 @@ esbuild.js
 .samples/**
 vsc-extension-quickstart.md
 images/icon.png
+icons/*

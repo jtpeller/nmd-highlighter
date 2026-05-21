@@ -89,6 +89,12 @@ li:has(.nmd-line-inline) {
     border-left: 4px solid #fc79b2;
 }
 
+.nmd-preview-git {
+    color: #07ffc9 !important;
+    background-color: var(--vscode-editor-selectionHighlightBackground) !important;
+    border-left: 4px solid #07ffc9;
+}
+
 .nmd-preview-custom {
     color: #FFFFFF !important;
     background-color: #986754 !important;

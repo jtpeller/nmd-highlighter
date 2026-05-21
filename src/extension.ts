@@ -20,6 +20,8 @@ const icons: { [key: string]: string } = {
     "person": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664h10Z"/></svg>`,
     // Left-arrow
     "left-arrow": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M1.5 8L14 2l-2 6 2 6-12.5-6z M4.5 8l6.5 2.5-1-2.5 1-2.5L4.5 8z" /></svg>`,
+    // GIT
+    "git": `<svg xmlns="http://www.w3.org/2000/svg" width="92pt" height="92pt" viewBox="0 0 92 92"><defs><clipPath id="a"><path d="M0 .113h91.887V92H0Zm0 0"/></clipPath></defs><g clip-path="url(#a)"><path style="stroke:none;fill-rule:nonzero;fill:%color;fill-opacity:1" d="M90.156 41.965 50.036 1.848a5.918 5.918 0 0 0-8.372 0l-8.328 8.332 10.566 10.566a7.03 7.03 0 0 1 7.23 1.684 7.034 7.034 0 0 1 1.669 7.277l10.187 10.184a7.028 7.028 0 0 1 7.278 1.672 7.04 7.04 0 0 1 0 9.957 7.05 7.05 0 0 1-9.965 0 7.044 7.044 0 0 1-1.528-7.66l-9.5-9.497V59.36a7.04 7.04 0 0 1 1.86 11.29 7.04 7.04 0 0 1-9.957 0 7.04 7.04 0 0 1 0-9.958 7.06 7.06 0 0 1 2.304-1.539V33.926a7.049 7.049 0 0 1-3.82-9.234L29.242 14.272 1.73 41.777a5.925 5.925 0 0 0 0 8.371L41.852 90.27a5.925 5.925 0 0 0 8.37 0l39.934-39.934a5.925 5.925 0 0 0 0-8.371"/></g></svg>`,
 };
 
 const logger = vscode.window.createOutputChannel("NMD Highlighter", { log: true });
@@ -86,19 +88,7 @@ class NMDConfig {
     // Checks whether provided line contains required keyword.
     checkLine(line: string) {
         for (var keyword of this.keywords) {
-            if (line.startsWith(keyword)
-                || line.startsWith(`_${keyword}`)
-                || line.startsWith(`*${keyword}`)
-                || line.startsWith(`**${keyword}`)
-                || line.startsWith(`***${keyword}`)
-                || line.startsWith(`**_${keyword}`)
-                || line.startsWith(`- ${keyword}`)
-                || line.startsWith(`- _${keyword}`)
-                || line.startsWith(`- *${keyword}`)
-                || line.startsWith(`- **${keyword}`)
-                || line.startsWith(`- ***${keyword}`)
-                || line.startsWith(`- **_${keyword}`)
-            ) {
+            if (line.includes(keyword)) {
                 return true;
             }
         }
@@ -110,6 +100,8 @@ class NMDExtensionDirector {
     rules: NMDConfig[] = [];
     #timeout: NodeJS.Timeout | undefined = undefined;
     #context: vscode.ExtensionContext
+    #lastCss = "";
+
 
     constructor(context: vscode.ExtensionContext) {
         // Save the context.
@@ -191,13 +183,16 @@ class NMDExtensionDirector {
         const cssContent = this.generateCSS();
         const stylePath = path.join(this.#context.extensionPath, './styles/nmd-styles.css');
 
-        try {
-            await fsPromises.writeFile(stylePath, cssContent);
-            logger.debug("NMD Extension successfully updated dynamic CSS!");
-        } catch (err) {
-            logger.error("Failed to write dynamic CSS file: " + err);
+        // Only write to the CSS file if something has changed.
+        if (cssContent !== this.#lastCss) {
+            try {
+                await fsPromises.writeFile(stylePath, cssContent);
+                logger.debug("NMD Extension successfully updated dynamic CSS!");
+            } catch (err) {
+                logger.error("Failed to write dynamic CSS file: " + err);
+            }
         }
-
+            
         // Start the decoration update.
         this.triggerUpdateDecorations(vscode.window.activeTextEditor);
     }
@@ -348,18 +343,18 @@ export function activate(context: vscode.ExtensionContext) {
         const editor = vscode.window.activeTextEditor;
         if (!editor) return;
 
-        // 1. Pull your custom categories from settings
+        // Pull custom categories from settings
         const config = vscode.workspace.getConfiguration('NMDHighlighter');
         const keywordsMap: { [key: string]: string[] } = config.get('keywords') || {};
         const categories = Object.keys(keywordsMap);
 
-        // 2. Show the Quick Pick menu to the user
+        // Show the Quick Pick menu to the user
         const selection = await vscode.window.showQuickPick(categories, {
             placeHolder: 'Select a log category',
             canPickMany: false
         });
 
-        // 3. Prepare the text (Timestamp + Keyword)
+        // Prepare the text (Timestamp + Keyword)
         const now = new Date();
         const timeStr = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}]`;
 
@@ -454,8 +449,41 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showTextDocument(doc);
     });
 
+    // Add a command to insert a LaTeX right arrow.
+    let insertRightArrowCommand = vscode.commands.registerCommand('nmdHighlighter.insertRightArrow', async () => {
+        const editor = vscode.window.activeTextEditor as vscode.TextEditor;
+        if (!editor) return;
+
+        editor.edit((editBuilder: { insert: (arg0: any, arg1: string) => void; }) => {
+            editBuilder.insert(editor.selection.active, "$\\rightarrow$");
+        });
+    });
+
+    // Add a command to insert a definition
+    let insertDefinitionCommand = vscode.commands.registerCommand('nmdHighlighter.insertDefinitionTemplate', async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) return;
+
+        // 1. Fetch your new configuration item (defaulting to "red" or a hex color if not found)
+        const config = vscode.workspace.getConfiguration('NMDHighlighter');
+        const defaultColor = config.get<string>('definitionColor') || "red";
+
+        // 2. Build the Snippet String
+        // $1 is the first stop (the word itself). 
+        // $0 is the final stop when they finish tab-navigating (the end of the phrase).
+        // Note: Backslashes must be escaped (\\) in TypeScript strings.
+        const snippetText = `$\\\\textcolor{${defaultColor}}{\\\\textnormal{\${1:WORD}}} \\\\rightarrow\$ $0`;
+
+        const snippet = new vscode.SnippetString(snippetText);
+
+        // 3. Insert the snippet at the active cursor position
+        await editor.insertSnippet(snippet);
+    });
+
     context.subscriptions.push(timestampCommand);
     context.subscriptions.push(monthlyTemplateCommand);
+    context.subscriptions.push(insertRightArrowCommand);
+    context.subscriptions.push(insertDefinitionCommand);
 
     // Must return the plugin to VS Code.
     return {

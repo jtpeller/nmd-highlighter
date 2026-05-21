@@ -4,6 +4,29 @@ This doc details the changes to the NMD Highlighter.
 
 Mostly based on [Keep a Changelog](http://keepachangelog.com/) for structure and concepts.
 
+## [0.0.10] - 2026.05.20
+
+### Changed in [0.0.10]
+
+- Fix file size issues by excluding WIP code.
+
+## [0.0.9] - 2026.05.20
+
+### Changed in [0.0.9]
+
+- Fix the README.
+
+## [0.0.8] - 2026.05.20
+
+### Added in [0.0.8]
+
+- New Command: Insert Right Arrow
+  - Useful for flow diagrams, processes, etc.
+- New Command: Insert Definition
+  - Inserts a snippet.
+  - LaTeX definition. It is controlled by a new configuration item!
+- New Command: Git Symbol
+
 ## [0.0.7] - 2026.04.02
 
 ### Added in [0.0.7]

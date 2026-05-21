@@ -26,15 +26,15 @@ This VSCode extension features:
 
 The formatting is handled by a series of rules that are baked-in by default. These rules are shown in the table below.
 
-| Category |       Color       |            Symbol             |           Keywords           | Description                                                |
-| :------: | :---------------: | :---------------------------: | :--------------------------: | :--------------------------------------------------------- |
-|  Issue   |        red        | Exclamation point in a circle |       ISSUE, CRITICAL        | Critical or important things that need immediate attention |
-|   Task   |       amber       |        Lightning Bolt         |          BUG, FIXME          | Goal, task, to-do item, etc.                               |
-|   Bug    |       amber       |        Lightning Bolt         |     TASK, SUBTASK, TODO      | Issue to fix.                                              |
-|   Fix    |       blue        |       Checkmark (blue)        |             FIX              | Issue or bug was fixed                                     |
-|   Done   |       green       |       Checkmark (green)       |             DONE             | Marks that something was finished.                         |
-| Verified | green (highlight) |             star              |           VERIFIED           | Marks that something was tested as working as intended.    |
-|  Notes   |    light pink     |            Pencil             | NOTE, INFO, COMMENT, DOC, // | Quick notes or not-so-critical things                      |
+| Category |       Color       |            Symbol             |        Keywords         | Description                                                |
+| :------: | :---------------: | :---------------------------: | :---------------------: | :--------------------------------------------------------- |
+|  Issue   |        red        | Exclamation point in a circle |     ISSUE, CRITICAL     | Critical or important things that need immediate attention |
+|   Bug    |      orange       |              Bug              |       BUG, FIXME        | Something wrong with the code.                             |
+|   Task   |       amber       |        Lightning Bolt         |   TASK, SUBTASK, TODO   | Something you need to do.                                  |
+|   Fix    |       blue        |       Checkmark (blue)        |           FIX           | Issue or bug was fixed                                     |
+|   Done   |       green       |       Checkmark (green)       |          DONE           | Marks that something was finished.                         |
+| Verified | green (highlight) |             Star              |        VERIFIED         | Marks that something was tested as working as intended.    |
+|  Notes   |    light pink     |            Pencil             | NOTE, INFO, COMMENT, // | Quick notes or not-so-critical things                      |
 
 Here's a preview of the rules in the editor itself:
 
@@ -55,6 +55,24 @@ You can insert a timestamp (via: `Ctrl + Shift + T`) which will input the timest
 ```
 
 This allows quicker insertion of the keyword, and captures the date, if that's handy to you.
+
+### Insert Rightarrow
+
+You can insert a right arrow (via: Ctrl + K \`), which will insert a LaTeX right arrow, useful for processes.
+
+```markdown
+$\rightarrow$
+```
+
+### Insert Definition
+
+You can insert a definition (via: `Ctrl + K Ctrl + D`), which will insert a LaTeX text-color definition.
+
+```markdown
+$\textcolor{#009f9f}{\textnormal{WORD}} \rightarrow$
+```
+
+This allows quick definitions.
 
 ### Monthly Note File Generator
 
