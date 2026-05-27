@@ -4,6 +4,23 @@ This doc details the changes to the NMD Highlighter.
 
 Mostly based on [Keep a Changelog](http://keepachangelog.com/) for structure and concepts.
 
+## [0.1.0] - 2026.05.27
+
+Beta release!
+
+### Added in [0.1.0]
+
+- Added 17 new icons!
+- Added a new Icon Gallery command, which allows you to see your current configuration and all icons available in a nice webview!
+
+### Changed in [0.1.0]
+
+- Fix the `//` keyword from matching with URLs (it only required a space!).
+- Improved descriptions for all icons (new and old).
+- Command titles are less redundant.
+- Updated README.
+- Fixed potential errors and improved stability.
+
 ## [0.0.10] - 2026.05.20
 
 ### Changed in [0.0.10]

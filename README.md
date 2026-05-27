@@ -4,23 +4,32 @@ Visual Studio Code (VSCode) extension for Notes Markdown, a custom file type whi
 
 [Marketplace Link](https://marketplace.visualstudio.com/items?itemName=jtpeller.nmd-highlighter)
 
-## Concept
+## Overview
+
+Notes Markdown is a concept which allows custom keywords to be specially highlighted. This is very useful for note-taking; whether it is for training, work, students, etc.
+
+There are several features that are useful, including custom definitions (which have configurable colors!), symbol or date insertion, and more.
+
+## Motivation
 
 When I write daily notes, I was using OneNote, but found that it's not exactly portable, nor is it Git friendly like Markdown is.
 
-I decided that it would be best to utilize Markdown, but I wanted to keep the same coloring I used for each line.
+I decided that it would be best to utilize Markdown, but I wanted to keep the same coloring I had previously used for each line.
 
-This extension is a means of allowing that, plus some VSCode commands that automate some note-taking processes.
+This extension is a means of allowing that, plus some handy VSCode commands that automate some note-taking processes.
 
 ## Features
 
 This VSCode extension features:
 
-- Customizable highlighting / formatting for a new file extension: `.nmd`
-- Applies these formats to VSCode's Markdown Preview, too!
+- Customizable keyword-based highlighting & formatting for a new file extension: `.nmd`
+  - Applies these formats to VSCode's Markdown Preview, too!
+- 24 icons to utilize for different categories of highlighting.
 - A command to insert the timestamp and a keyword.
 - A command to generate a Notes Markdown file for an entire month, useful for daily notes at work or school.
   - This command has many options, like the first day of the week, whether to include weekends, etc.
+- A command to insert a right arrow, useful for process flow.
+- A command to insert a colored definition template, useful for defining terminology or highlighting very important words.
 
 ## Formatting
 
@@ -38,11 +47,17 @@ The formatting is handled by a series of rules that are baked-in by default. The
 
 Here's a preview of the rules in the editor itself:
 
-![Editor Example](images/nmd.webp)
+![Editor View](assets/images/editor-view.png)
 
 These rules also apply to the Markdown Preview! Take a look!
 
-![Markdown Preview Example](images/nmd-preview.webp)
+![Markdown Preview](assets/images/markdown-preview.png)
+
+## Icons
+
+You can see all of the icons using a command to pull up an Icon Gallery. Simply open VSCode's command palette (`Ctrl + Shift + P`), search for NMD Highlighter, and select: `Show Icon Gallery`.
+
+![Icon Gallery](assets/images/icon-gallery.png)
 
 ## Commands
 

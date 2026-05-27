@@ -3,38 +3,11 @@ import * as fs from 'fs';
 import { promises as fsPromises } from 'fs';
 import * as path from 'path';
 
-const icons: { [key: string]: string } = {
-    // Exclamation Point
-    "exclaim": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M8 1A7 7 0 1 0 8 15A7 7 0 0 0 8 1zm-.5 3h1v5h-1V4zm.5 8.25a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5z"/></svg>`,
-    // Lightning Bolt
-    "lightning": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M9.5 1.5L4.5 9h3.5l-1.5 5.5L12.5 7H9l.5-5.5z"/></svg>`,
-    // Bug
-    "bug": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M8 3a2.5 2.5 0 0 0-2.5 2.5V6h5v-.5A2.5 2.5 0 0 0 8 3Zm3 4H5v3.5A3 3 0 0 0 8 13.5a3 3 0 0 0 3-3V7Zm1-1.234V7h1.5a.5.5 0 0 1 0 1H12v1.5h1.5a.5.5 0 0 1 0 1H12v1.5a2.5 2.5 0 0 1-1.373 2.23l.873.873a.5.5 0 0 1-.707.707l-1.025-1.025A3.98 3.98 0 0 1 8 14.5a3.98 3.98 0 0 1-1.768-.415L5.207 15.11a.5.5 0 0 1-.707-.707l.873-.873A2.5 2.5 0 0 1 4 11.266V9.5h-1.5a.5.5 0 0 1 0-1H4V7h-1.5a.5.5 0 0 1 0-1H4v-.234a3.487 3.487 0 0 1-1.121-1.89l-.754-.755a.5.5 0 0 1 .707-.707l.755.754A3.48 3.48 0 0 1 5.5 2.11V1.5a.5.5 0 0 1 1 0v.51a3.514 3.514 0 0 1 3 0V1.5a.5.5 0 0 1 1 0v.61a3.48 3.48 0 0 1 1.663.411l.755-.754a.5.5 0 0 1 .707.707l-.754.755A3.487 3.487 0 0 1 12 5.766Z"/></svg>`,
-    // Star
-    "star": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M8 .25a.75.75 0 0 1 .67.42l2.05 4.15 4.58.67a.75.75 0 0 1 .41 1.28l-3.32 3.23.78 4.56a.75.75 0 0 1-1.09.79L8 13.18l-4.1 2.15a.75.75 0 0 1-1.09-.79l.78-4.56-3.32-3.23a.75.75 0 0 1 .41-1.28l4.58-.67L7.33.67A.75.75 0 0 1 8 .25z"/></svg>`,
-    // Checkmark
-    "checkmark": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z"/></svg>`,
-    // Pencil
-    "pencil": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25a1.75 1.75 0 0 1 .445-.758l8.61-8.61Zm1.414 1.06a.25.25 0 0 0-.354 0L10.811 3.75l1.439 1.44 1.263-1.263a.25.25 0 0 0 0-.354l-1.086-1.086ZM11.189 6.25l-1.44-1.44L3.515 11.044a.25.25 0 0 0-.064.108l-.437 1.53 1.53-.437a.25.25 0 0 0 .108-.063l6.537-6.537Z"/></svg>`,
-    // Person
-    "person": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664h10Z"/></svg>`,
-    // Left-arrow
-    "left-arrow": `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%color" d="M1.5 8L14 2l-2 6 2 6-12.5-6z M4.5 8l6.5 2.5-1-2.5 1-2.5L4.5 8z" /></svg>`,
-    // GIT
-    "git": `<svg xmlns="http://www.w3.org/2000/svg" width="92pt" height="92pt" viewBox="0 0 92 92"><defs><clipPath id="a"><path d="M0 .113h91.887V92H0Zm0 0"/></clipPath></defs><g clip-path="url(#a)"><path style="stroke:none;fill-rule:nonzero;fill:%color;fill-opacity:1" d="M90.156 41.965 50.036 1.848a5.918 5.918 0 0 0-8.372 0l-8.328 8.332 10.566 10.566a7.03 7.03 0 0 1 7.23 1.684 7.034 7.034 0 0 1 1.669 7.277l10.187 10.184a7.028 7.028 0 0 1 7.278 1.672 7.04 7.04 0 0 1 0 9.957 7.05 7.05 0 0 1-9.965 0 7.044 7.044 0 0 1-1.528-7.66l-9.5-9.497V59.36a7.04 7.04 0 0 1 1.86 11.29 7.04 7.04 0 0 1-9.957 0 7.04 7.04 0 0 1 0-9.958 7.06 7.06 0 0 1 2.304-1.539V33.926a7.049 7.049 0 0 1-3.82-9.234L29.242 14.272 1.73 41.777a5.925 5.925 0 0 0 0 8.371L41.852 90.27a5.925 5.925 0 0 0 8.37 0l39.934-39.934a5.925 5.925 0 0 0 0-8.371"/></g></svg>`,
-};
+const icons: { [key: string]: string } = {};
 
 const logger = vscode.window.createOutputChannel("NMD Highlighter", { log: true });
 
 export let handler: NMDExtensionDirector;
-
-interface ExtensionSettings {
-    enabled: Object;
-    keywords: Object;
-    icons: Object;
-    bgColors: Object;
-    fgColors: Object;
-}
 
 class NMDConfig {
     name: string;
@@ -58,7 +31,8 @@ class NMDConfig {
         this.fgColor = fgColor;
         this.bgColor = bgColor;
         this.iconColor = iconColor;
-        this.svg = this.createSvgString(icons[iconName]);
+        const rawSvg = icons[iconName] || '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"></svg>';
+        this.svg = this.createSvgString(rawSvg.replace(/currentColor/g, this.iconColor));
         this.svgUri = this.fetchIconUri(iconName);
         this.decorationType = vscode.window.createTextEditorDecorationType({
             backgroundColor: this.bgColor,
@@ -81,8 +55,8 @@ class NMDConfig {
 
     // Creates the SVG URI value with the appropriate color.
     fetchIconUri(svgName: string) {
-        let svg = icons[svgName];
-        return this.createSvgUri(svg.replace("%color", this.iconColor));
+        let svg = icons[svgName] || '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"></svg>';
+        return this.createSvgUri(svg.replace(/currentColor/g, this.iconColor));
     }
 
     // Checks whether provided line contains required keyword.
@@ -135,47 +109,79 @@ class NMDExtensionDirector {
         this.rules = [];
     }
 
+    async loadIcons() {
+        const iconFolder = path.join(this.#context.extensionPath, 'assets', 'icons');
+
+        // Access the manifest (package.json) to get the master list of all available icons
+        const packageJSON = this.#context.extension.packageJSON;
+        
+        // Handle cases where configuration might be an array or a single object
+        const configContainer = Array.isArray(packageJSON?.contributes?.configuration) 
+            ? packageJSON.contributes.configuration[0] 
+            : packageJSON?.contributes?.configuration;
+
+        const iconEnum = configContainer?.properties?.["NMDHighlighter.icons"]?.additionalProperties?.enum;
+
+        if (!iconEnum || !Array.isArray(iconEnum)) {
+            logger.error("Initialization Error: Unable to find the 'NMDHighlighter.icons' enum list in package.json.");
+            return;
+        }
+
+        const iconNames = iconEnum as string[];
+
+        for (const name of iconNames) {
+            const iconPath = path.join(iconFolder, `${name}.svg`);
+            try {
+                const data = await fsPromises.readFile(iconPath, 'utf8');
+                icons[name] = data;
+            } catch (err) {
+                // This performs the runtime verification requested
+                logger.error(`Asset Validation Failed: Icon "${name}" is listed in package.json but is missing from assets at: ${iconPath}`);
+                icons[name] = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"></svg>';
+            }
+        }
+    }
+
     async loadSettings() {
-        // Clean up old decorations so they don't "stack"
+        // Clean up old decorations
         this.rules.forEach(rule => rule.decorationType.dispose());
-        this.rules.forEach(rule => rule.decorationOptions = [] as vscode.DecorationOptions[]);
+        this.rules = []; 
 
-        // Load all of the settings from configuration.
-        const config = getTypedConfig<ExtensionSettings>('NMDHighlighter');
+        // Ensure icons are loaded from the bundle
+        if (Object.keys(icons).length === 0) {
+            await this.loadIcons();
+        }
 
-        // First, collect all the names.
-        let ruleNames: Set<string> = new Set([...Object.keys(config.enabled), ...Object.keys(config.keywords), ...Object.keys(config.icons), ...Object.keys(config.bgColors), ...Object.keys(config.fgColors)]);
+        // Extract settings as plain objects (WorkspaceConfiguration doesn't work with Object.keys directly)
+        const config = vscode.workspace.getConfiguration('NMDHighlighter');
+        const enabledObj = config.get<Record<string, boolean>>('enabled') || {};
+        const keywordsObj = config.get<Record<string, string[]>>('keywords') || {};
+        const iconsObj = config.get<Record<string, string>>('icons') || {};
+        const bgColorsObj = config.get<Record<string, string>>('bgColors') || {};
+        const fgColorsObj = config.get<Record<string, string>>('fgColors') || {};
 
-        // Convert the pieces of config as a map
-        let enabledMap: Map<string, boolean> = new Map(Object.entries(config.enabled));
-        let keywordsMap: Map<string, string[]> = new Map(Object.entries(config.keywords));
-        let iconMap: Map<string, string> = new Map(Object.entries(config.icons));
-        let bgColorMap: Map<string, string> = new Map(Object.entries(config.bgColors));
-        let fgColorMap: Map<string, string> = new Map(Object.entries(config.fgColors));
+        // Collect all unique rule keys
+        const ruleNames = new Set([
+            ...Object.keys(enabledObj),
+            ...Object.keys(keywordsObj),
+            ...Object.keys(iconsObj),
+            ...Object.keys(bgColorsObj),
+            ...Object.keys(fgColorsObj)
+        ]);
 
-        // Then, utilize these names to build the values.
+        // Rebuild the rule set
         for (let k of ruleNames) {
-            // Extract dictionary values.
-            var enabled = enabledMap.get(k);
-            var words = keywordsMap.get(k);
-            var icon = iconMap.get(k);
-            var bgColor = bgColorMap.get(k);
-            var fgColor = fgColorMap.get(k);
+            const enabled = enabledObj[k] ?? true;
+            const words = keywordsObj[k] ?? [];
+            const icon = iconsObj[k] ?? "exclaim";
+            const bgColor = bgColorsObj[k] ?? "#00000000";
+            const fgColor = fgColorsObj[k] ?? "#FFFFFF";
 
-            // Ensure they exist.
-            if (enabled == undefined) { throw Error(`Enabled Flag for ${k} not found. Add it in your settings!`); }
-            if (words == undefined) { throw Error(`Keyword for ${k} not found. Add it in your settings!`); }
-            if (icon == undefined) { throw Error(`Icon for ${k} not found. Add it in your settings!`); }
-            if (bgColor == undefined) { throw Error(`Background Color for ${k} not found. Add it in your settings!`); }
-            if (fgColor == undefined) { throw Error(`Foreground Color for ${k} not found. Add it in your settings!`); }
-
-            // Decide whether the iconColor should represent the foreground / background.
-            var iconColor = fgColor;
-            if (bgColor != "#00000000" && bgColor != "#000000" && bgColor != "#ffffff00" && bgColor != "#ffffff") {
+            let iconColor = fgColor;
+            if (bgColor !== "#00000000" && bgColor !== "transparent") {
                 iconColor = bgColor;
             }
 
-            // Define and save the rule.
             this.rules.push(new NMDConfig(k, words, icon, fgColor, bgColor, enabled, iconColor));
         }
 
@@ -316,6 +322,118 @@ li:has(.nmd-line-inline) {
         });
 
         return css;
+    }
+
+    showIconGallery() {
+        const panel = vscode.window.createWebviewPanel(
+            'nmdIconGallery',
+            'NMD Icon Gallery',
+            vscode.ViewColumn.One,
+            {
+                enableScripts: true
+            }
+        );
+
+        panel.webview.html = this.getIconGalleryHtml();
+
+        panel.webview.onDidReceiveMessage(async (message) => {
+            if (message.command === 'reload') {
+                await this.loadSettings();
+                panel.webview.html = this.getIconGalleryHtml();
+            }
+        }, undefined, this.#context.subscriptions);
+    }
+
+    private getIconGalleryHtml(): string {
+        const activeRulesHtml = this.rules.map(rule => {
+            const rawSvg = icons[rule.iconName] || '';
+            if (!rawSvg) {
+                return '';
+            }
+            const coloredSvg = rawSvg.replace(/currentColor/g, rule.iconColor);
+            return `
+                <div class="card">
+                    <div class="preview">
+                        <div class="icon-wrapper">${coloredSvg}</div>
+                    </div>
+                    <div class="info">
+                        <div class="rule-key">${rule.name}</div>
+                        <div class="rule-details"><b>Enabled</b>: ${rule.enabled}</div>
+                        <div class="rule-details"><b>Keywords</b>: ${rule.keywords.join(', ')}</div>
+                        <div class="rule-details"><b>Icon</b>: ${rule.iconName}</div>
+                        <div class="rule-details"><b>Icon Color</b>: ${rule.iconColor}</div>
+                        <div class="rule-details"><b>Background</b>: ${rule.bgColor}</div>
+                        <div class="rule-details"><b>Foreground</b>: ${rule.fgColor}</div>
+                    </div>
+                </div>`;
+        }).join('');
+
+        const allIconsHtml = Object.keys(icons).sort().map(name => {
+            if (!icons[name]) {
+                return '';
+            }
+            const rawSvg = icons[name].replace(/currentColor/g, 'var(--vscode-descriptionForeground)');
+            return `
+                <div class="lib-card">
+                    <div class="lib-icon">${rawSvg}</div>
+                    <div class="lib-name">${name}</div>
+                </div>`;
+        }).join('');
+
+        return `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <style>
+                    body { font-family: var(--vscode-font-family); color: var(--vscode-foreground); padding: 20px; }
+                    .header-container { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--vscode-settings-headerForeground); padding-bottom: 5px; margin-bottom: 15px; }
+                    h2 { border-bottom: none; margin: 0; }
+                    h2.lib-header { border-bottom: 1px solid var(--vscode-settings-headerForeground); padding-bottom: 5px; margin-top: 40px; margin-bottom: 15px; }
+                    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-bottom: 40px; }
+                    .card { border: 1px solid var(--vscode-widget-border); border-radius: 4px; overflow: hidden; background: var(--vscode-editor-background); }
+                    .preview { height: 60px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--vscode-widget-border); }
+                    .icon-wrapper { width: 32px; height: 32px; }
+                    .icon-wrapper svg { width: 100%; height: 100%; display: block; }
+                    .info { padding: 8px; }
+                    .rule-key { font-weight: bold; font-size: 1.1em; margin-bottom: 4px; color: var(--vscode-symbolIcon-keywordForeground); }
+                    .rule-details { font-size: 0.85em; color: var(--vscode-descriptionForeground); }
+                    
+                    .lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; }
+                    .lib-card { display: flex; flex-direction: column; align-items: center; padding: 10px; border: 1px transparent solid; }
+                    .lib-card:hover { background: var(--vscode-list-hoverBackground); border-radius: 4px; }
+                    .lib-icon { width: 24px; height: 24px; margin-bottom: 8px; }
+                    .lib-icon svg { width: 100%; height: 100%; display: block; }
+                    .lib-name { font-size: 0.8em; text-align: center; }
+                    
+                    .reload-button { 
+                        background-color: var(--vscode-button-background); 
+                        color: var(--vscode-button-foreground); 
+                        border: none; 
+                        padding: 6px 14px; 
+                        cursor: pointer; 
+                        border-radius: 2px;
+                        font-size: 13px;
+                    }
+                    .reload-button:hover { background-color: var(--vscode-button-hoverBackground); }
+                </style>
+            </head>
+            <body>
+                <div class="header-container">
+                    <h2>Active Configuration</h2>
+                    <button class="reload-button" onclick="reload()">Reload Settings</button>
+                </div>
+                <div class="grid">${activeRulesHtml}</div>
+                <h2 class="lib-header">Available Icon Library</h2>
+                <div class="lib-grid">${allIconsHtml}</div>
+
+                <script>
+                    const vscode = acquireVsCodeApi();
+                    function reload() {
+                        vscode.postMessage({ command: 'reload' });
+                    }
+                </script>
+            </body>
+            </html>`;
     }
 }
 
@@ -480,10 +598,15 @@ export function activate(context: vscode.ExtensionContext) {
         await editor.insertSnippet(snippet);
     });
 
+    let iconGalleryCommand = vscode.commands.registerCommand('nmdHighlighter.showIconGallery', () => {
+        handler.showIconGallery();
+    });
+
     context.subscriptions.push(timestampCommand);
     context.subscriptions.push(monthlyTemplateCommand);
     context.subscriptions.push(insertRightArrowCommand);
     context.subscriptions.push(insertDefinitionCommand);
+    context.subscriptions.push(iconGalleryCommand);
 
     // Must return the plugin to VS Code.
     return {
@@ -531,11 +654,11 @@ function extendMarkdownItInternal(md: any) {
                         isListItem = true;
                     }
 
-                    let rawSvg = icons[rule.iconName];
+                    let rawSvg = icons[rule.iconName] || '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"></svg>';
                     if (rule.iconColor == rule.bgColor) {
-                        rawSvg = rawSvg.replace("%color", rule.fgColor);
+                        rawSvg = rawSvg.replace(/currentColor/g, rule.fgColor);
                     } else {
-                        rawSvg = rawSvg.replace("%color", rule.iconColor);
+                        rawSvg = rawSvg.replace(/currentColor/g, rule.iconColor);
                     }
                     tokens[idx].nmdCustom = true;
 

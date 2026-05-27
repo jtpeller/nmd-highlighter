@@ -1,7 +1,7 @@
 {
     "name": "nmd-highlighter",
     "displayName": "Notes Markdown (NMD) Highlighter",
-    "version": "0.0.10",
+    "version": "0.1.0",
     "publisher": "jtpeller",
     "description": "Customizable semantic highlighting and gutter icons for Notes Markdown (.nmd) files",
     "author": {
@@ -10,7 +10,7 @@
     "engines": {
         "vscode": "^1.80.0"
     },
-    "icon": "images/icon.webp",
+    "icon": "assets/images/icon.webp",
     "galleryBanner": {
         "color": "#0a0a0a",
         "theme": "dark"
@@ -31,22 +31,27 @@
         "commands": [
             {
                 "command": "nmdHighlighter.insertTimestamp",
-                "title": "NMD Highlighter: Insert Current Timestamp",
+                "title": "Insert Current Timestamp",
                 "category": "NMD Highlighter"
             },
             {
                 "command": "nmdHighlighter.insertRightArrow",
-                "title": "NMD Highlighter: Insert LaTeX Right Arrow",
+                "title": "Insert LaTeX Right Arrow",
                 "category": "NMD Highlighter"
             },
             {
                 "command": "nmdHighlighter.insertDefinitionTemplate",
-                "title": "NMD Highlighter: Insert Definition Template",
+                "title": "Insert Definition Template",
                 "category": "NMD Highlighter"
             },
             {
                 "command": "nmdHighlighter.generateMonthlyTemplate",
-                "title": "NMD Highlighter: Generate Monthly Template",
+                "title": "Generate Monthly Template",
+                "category": "NMD Highlighter"
+            },
+            {
+                "command": "nmdHighlighter.showIconGallery",
+                "title": "Show Icon Gallery",
                 "category": "NMD Highlighter"
             }
         ],
@@ -136,7 +141,7 @@
                             "NOTE",
                             "INFO",
                             "COMMENT",
-                            "//"
+                            "// "
                         ]
                     },
                     "additionalProperties": {
@@ -162,40 +167,82 @@
                     "additionalProperties": {
                         "type": "string",
                         "enum": [
-                            "exclaim",
-                            "lightning",
-                            "checkmark",
+                            "asterisk",
                             "bug",
-                            "star",
+                            "bug2",
+                            "checkmark",
+                            "down",
+                            "exclaim",
+                            "flag",
+                            "git",
+                            "info",
+                            "key",
+                            "left",
+                            "lightning",
+                            "pause",
                             "pencil",
                             "person",
                             "plane",
-                            "left-arrow",
-                            "git"
+                            "play",
+                            "reset",
+                            "right",
+                            "star",
+                            "stop",
+                            "unlock",
+                            "up",
+                            "warning"
                         ],
                         "enumItemLabels": [
-                            "Exclamation Point",
-                            "Lightning Bolt",
-                            "Checkmark",
+                            "Asterisk",
                             "Bug",
-                            "Star",
+                            "Bug (Alt)",
+                            "Checkmark",
+                            "Down Arrow",
+                            "Exclamation Point",
+                            "Flag",
+                            "Git Branch",
+                            "Info",
+                            "Key",
+                            "Left Arrow",
+                            "Lightning Bolt",
+                            "Pause",
                             "Pencil",
                             "Person",
                             "Plane",
-                            "Left Arrow",
-                            "Git: Version Control"
+                            "Play",
+                            "Reset",
+                            "Right Arrow",
+                            "Star",
+                            "Stop",
+                            "Unlock",
+                            "Up Arrow",
+                            "Warning"
                         ],
                         "markdownEnumDescriptions": [
-                            "Exclamation Point in a filled circle",
-                            "Filled Lightning Bolt",
-                            "Checkmark",
-                            "Bug",
-                            "Filled 5-pointed star",
-                            "Outlined Pencil icon",
-                            "Outlined Person icon",
-                            "Outlined Plane icon",
-                            "Outlined arrowhead icon pointing left",
-                            "Version Control branch icon"
+                            "![asterisk](assets/icons/asterisk.svg) A simple multi-pointed asterisk or star symbol.",
+                            "![bug](assets/icons/bug.svg) A beetle-like bug icon, ideal for marking software defects.",
+                            "![bug2](assets/icons/bug2.svg) An alternate bug icon variant.",
+                            "![checkmark](assets/icons/checkmark.svg) A checkmark icon for verified or completed items.",
+                            "![down](assets/icons/down.svg) A standard downward-pointing arrow.",
+                            "![exclaim](assets/icons/exclaim.svg) A circular icon containing an exclamation point for issues or warnings.",
+                            "![flag](assets/icons/flag.svg) A triangular flag icon for marking milestones or points of interest.",
+                            "![git](assets/icons/git.svg) A branch symbol for Git or version control related notes.",
+                            "![info](assets/icons/info.svg) A circular info icon for helpful annotations.",
+                            "![key](assets/icons/key.svg) A key icon for passwords, secrets, or access-related notes.",
+                            "![left](assets/icons/left.svg) A left-pointing arrow icon.",
+                            "![lightning](assets/icons/lightning.svg) A lightning bolt icon for high-priority or urgent tasks.",
+                            "![pause](assets/icons/pause.svg) A standard vertical-bar pause symbol.",
+                            "![pencil](assets/icons/pencil.svg) A pencil icon representing a draft, edit, or general note.",
+                            "![person](assets/icons/person.svg) A person silhouette icon for assignments or user-specific notes.",
+                            "![plane](assets/icons/plane.svg) A plane icon for travel, shipping, or deployment notes.",
+                            "![play](assets/icons/play.svg) A triangle play button symbol for starting processes.",
+                            "![reset](assets/icons/reset.svg) A circular arrow icon for resets, refreshes, or repeating tasks.",
+                            "![right](assets/icons/right.svg) A right-pointing arrow icon.",
+                            "![star](assets/icons/star.svg) A 5-pointed star icon for favorites, highlights, or achievements.",
+                            "![stop](assets/icons/stop.svg) A standard square stop symbol.",
+                            "![unlock](assets/icons/unlock.svg) An open padlock icon representing security or access status.",
+                            "![up](assets/icons/up.svg) An upward-pointing arrow.",
+                            "![warning](assets/icons/warning.svg) A warning triangle for critical alerts, hazards, or attention."
                         ]
                     },
                     "markdownDescription": "%NMDHighlighter.icons.description%",

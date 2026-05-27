@@ -90,13 +90,7 @@ li:has(.nmd-line-inline) {
 }
 
 .nmd-preview-git {
-    color: #07ffc9 !important;
+    color: #00AAFF !important;
     background-color: var(--vscode-editor-selectionHighlightBackground) !important;
-    border-left: 4px solid #07ffc9;
-}
-
-.nmd-preview-custom {
-    color: #FFFFFF !important;
-    background-color: #986754 !important;
-    border-left: 4px solid #FFFFFF;
+    border-left: 4px solid #00AAFF;
 }
